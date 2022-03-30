@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %} Update user {% endblock title %}
+
+{% block content %}
+
+<h3>Редактирование профиля {{request.user.username}}</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Редактировать профиль">
+</form>
+</br>
+<a href="/news/"><input type="submit" value="Отменить"></a>
+{% endblock content %}

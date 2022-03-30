@@ -1,0 +1,19 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %} Post list {% endblock title %}
+
+{% block content %}
+
+<h3>Информация о новости</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }} <!-- Теперь нам нужна только готовая форма и кнопка -->
+    <input type="submit" value="Добавить новость">
+</form> </br>
+
+<a href="/news/"><input type="submit" value="Отменить"></a>
+
+
+{% endblock content %}

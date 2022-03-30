@@ -1,0 +1,69 @@
+python manage.py shell
+from news.models import *
+
+an = User.objects.create_user(username='Anna') - пользователь Анна
+eg = User.objects.create_user(username='Egor') - пользователь Егор
+authorAnna = Author.objects.create(authorUser=an) - автор Анна
+authorEgor = Author.objects.create(authorUser=eg) - автор Егор
+
+IT = Category.objects.create(name='IT') - категория IT-технологий
+society = Category.objects.create(name='Society') - категория Общество
+politics = Category.objects.create(name='Politics') - категория Политика
+sport = Category.objects.create(name='Sport') - категория Спорт
+culture = Category.objects.create(name='Culture') - категория Культура
+
+AR1 = Post.objects.create(author=authorEgor, categoryType = 'AR', title = 'Physical culture and sports in the life of modern society',
+... text = 'Today, sport is an integral part of society. Penetrating all levels of modern society...') - создание статьи
+AR2 = Post.objects.create(author=authorAnna, categoryType = 'AR', title = 'The influence of IT giants on politics',
+... text = 'The new technological revolution and the development of large IT companies have a great impact on the current model of public administration...') - создание статьи
+NW1 = Post.objects.create(author=authorEgor, categoryType = 'NW', title = 'New production of Swan Lake',
+... text = 'A troupe from Italy performing Swan Lake at the Mariinsky Theater')
+AR1.postCategory.add(society, sport)
+AR2.postCategory.add(IT, politics)
+NW1.postCategory.add(politics, culture)
+
+comment1AR1 = Comment.objects.create(commentPost = AR1, commentUser = an, text = 'very interesting, thank you')
+comment2AR1 = Comment.objects.create(commentPost = AR1, commentUser = eg, text = 'I agree, good article')
+comment1AR2 = Comment.objects.create(commentPost = AR2, commentUser = eg, text = 'Yes, IT technologies are now developing very quickly and affect all areas of activity')
+comment1NW1 = Comment.objects.create(commentPost = NW1, commentUser = an, text = 'This production is not on the playbill of the theater ...!')
+
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).dislike()
+Post.objects.get(id=2).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=3).dislike()
+Post.objects.get(id=3).dislike()
+Post.objects.get(id=3).like()
+
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=2).like()
+
+authorAnna.update_rating()
+authorEgor.update_rating()
+authorAnna.ratingAuthor
+authorEgor.ratingAuthor
+
+a = Author.objects.order_by('-ratingAuthor')[:1]
+for i in a:
+	i.authorUser.username
+	i.ratingAuthor
+
+b = Post.objects.filter(categoryType='AR').order_by('-rating')[:1]
+for i in b:
+	i.dateCreation.strftime("%Y-%m-%d")
+	i.author.authorUser.username
+	i.rating
+	i.title
+	i.preview()
+	arBest = i.id
+
+c = Comment.objects.filter(commentPost=arBest)
+for i in c:
+	i.dateCreation.strftime("%Y-%m-%d")
+	i.commentUser.username
+	i.rating
+	i.text
+
+

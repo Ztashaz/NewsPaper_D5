@@ -1,0 +1,59 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+
+{% block content %}
+<!-- Перед таблицей добавим форму для поиска -->
+<form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form>
+
+        <table>
+            <thead>
+                <th>
+                    Заголовок
+                </th>
+                <th>
+                    Автор
+                </th>
+                <th>
+                    Дата публикации
+                </th>
+                <th>
+                    Текст
+                </th>
+            </thead>
+        {% for post in filter.qs %}
+
+            <tr>
+                <td>
+                    {{ post.title|censor }}
+                </td>
+                <td>
+                    {{ post.author.authorUser.username }}
+                </td>
+                <td>
+                    {{ post.dateCreation|date:'d M Y' }}
+                </td>
+                <td>
+                    {{ post.text|truncatechars:50|censor }}
+                </td>
+            </tr>
+
+
+        {% endfor %}
+
+        </table>
+
+
+
+
+<a href="/news/"><u>На главную</u></a>
+
+{% endblock content %}
